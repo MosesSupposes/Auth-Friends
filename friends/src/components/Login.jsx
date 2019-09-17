@@ -4,6 +4,10 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 //hooks
 import { useInput } from '../utils/hooks/useInput'
 
+//redux
+import { connect } from 'react-redux'
+import { login } from '../store/actions'
+
 function Login(props) {
 	const [credentials, setCredentials, handleChanges] = useInput({
 		username: '',
@@ -11,13 +15,7 @@ function Login(props) {
 	})
   	const handleSubmit = e => {
     e.preventDefault();
-    axiosWithAuth()
-      .post('/login', credentials)
-      .then(res => {
-		localStorage.setItem('token', res.data.payload);
-        props.history.push('/friendsList');
-      })
-      .catch(err => console.error(err));
+    props.login(credentials, props.history)
   };
 
 	return (
@@ -41,4 +39,12 @@ function Login(props) {
 	);
 }
 
-export default Login;
+const  mapStateToProps = props => {
+	
+}
+
+const mapActionsToProps = {
+	login
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Login);
