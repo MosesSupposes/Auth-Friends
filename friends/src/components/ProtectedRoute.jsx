@@ -11,11 +11,9 @@ export default function ProtectedRoute({ component: Component,  ...rest  }) {
             {...rest}
             render={props => (
                 localStorage.getItem('token')
-                    ? <Component />
+                    ? <Component {...props} />
                     : <Redirect to='/login' />
             )}
         />
     )
-    
-    
 }
