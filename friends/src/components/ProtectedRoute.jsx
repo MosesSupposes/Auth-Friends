@@ -1,5 +1,5 @@
 import React from 'react'
-import Route from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 
 export default function ProtectedRoute({ component: Component,  ...rest  }) {
     // Private Route rules:
@@ -9,11 +9,13 @@ export default function ProtectedRoute({ component: Component,  ...rest  }) {
     return (
         <Route 
             {...rest}
-            render={props => (
-                localStorage.getItem('token')
+            render={props => {
+                // TODO: check against authToken in redux store
+            //    return localStorage.getItem('token') === props.authToken
+               return localStorage.getItem('token')
                     ? <Component {...props} />
                     : <Redirect to='/login' />
-            )}
+            }}
         />
     )
 }
