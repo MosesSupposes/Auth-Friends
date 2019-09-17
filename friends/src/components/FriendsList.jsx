@@ -1,19 +1,29 @@
 import React, { useEffect } from 'react'
+
+//redux
 import { connect }  from 'react-redux'
 import { getFriends } from '../store/actions'
+
+//components
+import FriendsForm from './FriendsForm'
 
 function FriendsList(props) {
     useEffect(() => {
         props.getFriends()
     }, [])
     
-    return (
-        <div>
-            {props.friends.map(friend => (
-                <Friend key={friend.id} {...friend} />
-            ))}
-        </div>
-    )
+    if (props.loading) {
+        return <p>Loading...</p>
+    } else {
+        return (
+            <div>
+                <FriendsForm />
+                {props.friends.map(friend => (
+                    <Friend key={friend.id} {...friend} />
+                ))}
+            </div>
+        )
+    }
 } 
 
 function Friend(props) {
@@ -27,7 +37,8 @@ function Friend(props) {
 }
 
 const mapStateToProps = state => ({
-    friends: state.friends.friendsList
+    friends: state.friends.friendsList,
+    loading: state.friends.loading
 })
 
 const mapActionsToProps = {
