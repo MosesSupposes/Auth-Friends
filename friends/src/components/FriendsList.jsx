@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect }  from 'react-redux'
+import { getFriends } from '../store/actions'
 
 function FriendsList(props) {
+    useEffect(() => {
+        props.getFriends()
+    }, [])
+    
     return (
         <div>
             {props.friends.map(friend => (
@@ -25,4 +30,11 @@ const mapStateToProps = state => ({
     friends: state.friends.friendsList
 })
 
-export default connect(mapStateToProps, {})(FriendsList) 
+const mapActionsToProps = {
+    getFriends
+}
+
+export default connect(
+    mapStateToProps, 
+    mapActionsToProps
+)(FriendsList) 
