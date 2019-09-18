@@ -2,8 +2,11 @@ import React, { useEffect } from 'react'
 
 //redux
 import { connect }  from 'react-redux'
-import { getFriends } from '../store/actions'
-import { startEditingFriend } from '../store/actions'
+import { 
+    getFriends,
+    startEditingFriend,
+    deleteFriend 
+} from '../store/actions'
 
 //components
 import FriendsForm from './FriendsForm'
@@ -24,6 +27,7 @@ function FriendsList(props) {
                         key={friend.id} 
                         {...friend} 
                         startEditingFriend={props.startEditingFriend}
+                        deleteFriend={props.deleteFriend}
                     />
                 ))}
             </div>
@@ -33,6 +37,7 @@ function FriendsList(props) {
 
 function Friend(props) {
     const startEditingFriend = () => props.startEditingFriend(props.id)
+    const deleteFriend = () => props.deleteFriend(props.id)
     return (
         <div>
             <h1>{props.name}</h1>
@@ -40,7 +45,7 @@ function Friend(props) {
             <p>{props.email}</p>
 
             <button onClick={startEditingFriend}>Edit</button>
-            <button>Delete</button>
+            <button onClick={deleteFriend}>Delete</button>
         </div>
     )
 }
@@ -52,7 +57,8 @@ const mapStateToProps = state => ({
 
 const mapActionsToProps = {
     getFriends,
-    startEditingFriend
+    startEditingFriend,
+    deleteFriend
 }
 
 export default connect(

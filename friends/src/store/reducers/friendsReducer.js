@@ -9,7 +9,11 @@ import {
 
     EDIT_FRIEND_START,
     EDIT_FRIEND_SUCCESS,
-    EDIT_FRIEND_FAILURE
+    EDIT_FRIEND_FAILURE,
+
+    DELETE_FRIEND_START,
+    DELETE_FRIEND_SUCCESS,
+    DELETE_FRIEND_FAILURE,
 } from '../actions'
 
 import * as R from 'ramda'
@@ -65,6 +69,16 @@ export default function friendsReducer(state=initialState, action) {
                 editing: R.F,
                 friendToEditId: R.always(null)
             })
+        
+        case DELETE_FRIEND_START:
+            return state
+
+        case DELETE_FRIEND_SUCCESS: 
+            return R.assoc('friendsList', action.payload, state)
+
+        case DELETE_FRIEND_FAILURE:
+            return state
+            
         default: 
             return state
     }

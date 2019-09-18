@@ -43,11 +43,9 @@ export const startEditingFriend = id => {
 
 export const editFriend = details => (dispatch, getState) => {
     const { friends: { friendToEditId: id }  } = getState()
-    console.log('ID', id)
     axiosWithAuth().put(`/friends/${id}`, details)
     .then(res => {
         dispatch({ type: EDIT_FRIEND_SUCCESS, payload: res.data})
-        console.log(res)
     })
     .catch(res => {
         dispatch({ type: EDIT_FRIEND_FAILURE })
@@ -55,3 +53,20 @@ export const editFriend = details => (dispatch, getState) => {
     })
 }
 
+
+export const DELETE_FRIEND_START = "DELETE_FRIEND_START"
+export const DELETE_FRIEND_SUCCESS = "DELETE_FRIEND_SUCCESS"
+export const DELETE_FRIEND_FAILURE = "DELETE_FRIEND_FAILURE"
+
+export const deleteFriend = id => dispatch => {
+    dispatch({ type: DELETE_FRIEND_START })
+    axiosWithAuth().delete(`/friends/${id}`)
+    .then(res => {
+        console.log('DELETE SUCCESS RES', res)
+        dispatch({ type:  DELETE_FRIEND_SUCCESS, payload: res.data })
+    })
+    .catch(res => {
+        dispatch({ type: DELETE_FRIEND_FAILURE })
+        console.error(res)
+    })
+}
