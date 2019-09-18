@@ -8,6 +8,8 @@ import {
     ADD_FRIEND_FAILURE
 } from '../actions'
 
+import * as R from 'ramda'
+
 const initialState = {
     loading: false,
     friendsList: []
@@ -16,42 +18,28 @@ const initialState = {
 export default function friendsReducer(state=initialState, action) {
     switch(action.type) {
         case GET_FRIENDS_START:
-            return {
-                ...state, 
-                loading: true,
-            }
+            return R.assoc('loading', R.T(), state)
 
         case GET_FRIENDS_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                friendsList: action.payload
-            }
+            return R.evolve(R.__, state)({
+                loading: R.F,
+                friendsList: R.always(action.payload)
+            })
             
         case GET_FRIENDS_FAILURE:
-            return {
-                ...state,
-                loading: false
-            }    
+            return R.assoc('loading', R.F(), state)
         
         case ADD_FRIEND_START: 
-            return {
-                ...state,
-                loading: true
-            }
+            return R.assoc('loading', R.T(), state)
 
         case ADD_FRIEND_SUCCESS:
-                return {
-                    ...state,
-                    loading: false,
-                    friendsList: action.payload
-                }
+                return R.evolve(R.__, state)({
+                    loading: R.F,
+                    friendsList: R.always(action.payload)
+                })
         
         case ADD_FRIEND_FAILURE:
-            return {
-                ...state,
-                loading: false
-            }
+            return R.assoc('loading', R.F(), state)
 
         default: 
             return state
