@@ -2,7 +2,7 @@ import React from 'react'
 
 //redux
 import { connect } from 'react-redux'
-import { addFriend } from '../store/actions'
+import { addFriend, editFriend } from '../store/actions'
 
 //custom hooks
 import { useInput } from '../utils/hooks/useInput'
@@ -18,9 +18,15 @@ function FriendsForm(props) {
     const [friend, setFriend, handleChanges] = useInput(initialState)
     
     const handleSubmit = (e) => {
-        e.preventDefault()
-        props.addFriend(friend)
-        setFriend(initialState)
+        if (props.editing) {
+            e.preventDefault()
+            props.editFriend(friend)
+            setFriend(initialState)
+        } else {
+            e.preventDefault()
+            props.addFriend(friend)
+            setFriend(initialState)
+        }
     }
     
     return (
@@ -45,5 +51,16 @@ function FriendsForm(props) {
     )
 }
 
+const mapStateToProps = state => ({
+    editing: state.friends.editing
+})
 
-export default connect(null, { addFriend })(FriendsForm)
+const mapActionsToProps = {
+    addFriend,
+    editFriend
+}
+
+export default connect(
+    mapStateToProps,
+    mapActionsToProps
+)(FriendsForm)
