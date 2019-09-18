@@ -12,11 +12,13 @@ export default function ProtectedRoute({ component: Component,  ...rest  }) {
         authToken: state.login.authToken
     }))
 
+    const storedToken = localStorage.getItem('token')
+
     return (
         <Route 
             {...rest}
             render={props => {
-               return (localStorage.getItem('token') === authToken) 
+               return (storedToken && storedToken === authToken) 
                     ? <Component {...props} />
                     : <Redirect to='/login' />
             }}
